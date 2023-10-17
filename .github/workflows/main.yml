@@ -1,0 +1,29 @@
+- name: Semantic Release Notes Generator
+  # You may pin to the exact commit or the version.
+  # uses: Fresa/release-notes-generator@ae64cb5d49ef1d718cdc8bf44b2a85b8e637996d
+  uses: Fresa/release-notes-generator@v2.0.1
+  with:
+    # The version of the release
+    version: 
+    # The commit reference of the last release.  The reference can be a tag, a branch or a commit sha. Examples:
+  tags/v1.0.1
+  v1.0.1
+  heads/my-branch
+  my-branch
+  431880b
+    last_release_ref: 
+    # The commit reference of this release.  The reference can be a tag, a branch or a commit sha. Examples:
+  tags/v2.0.0
+  v2.0.0
+  heads/master
+  master
+  531c800
+    release_ref: 
+    # The path to a file containing the commit messages and shas to parse as release notes. Example:
+  ./commit-logs.json
+
+The content of the file should be formatted as a JSON list of commit message objects, example:
+  [{"hash": "62c0a92ed8c684f966391c97ef68fcd7560ff666", "message": "This is a commit message"}]
+    path_to_commits: 
+    # Authorized GitHub Access Token used to fetch the release notes generator. Defaults to github.token
+    github_token: # optional, default is ${{ github.token }}
