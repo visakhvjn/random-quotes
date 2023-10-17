@@ -5,6 +5,7 @@ import {Block} from 'baseui/block';
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ImBullhorn, ImCopy } from "react-icons/im";
+import { HiVolumeOff } from "react-icons/hi";
 
 
 export const Main = () => {
@@ -12,10 +13,18 @@ export const Main = () => {
     const [author, setAuthor] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isCoped, setIsCoped] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false);
 
-    const speakText = (text: string) => {
-        const speech = new SpeechSynthesisUtterance(text);
-        window.speechSynthesis.speak(speech);
+    const handleSpeakClick = (text: string) => {
+
+        if (isSpeaking) {
+            window.speechSynthesis.cancel();
+        } else {
+            const speech = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(speech);
+        }
+        
+        setIsSpeaking(!isSpeaking);
     };
 
     const onCopy = () => {
@@ -56,9 +65,9 @@ export const Main = () => {
             <Block style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px' }}>
                 <ButtonGroup>
                     {('speechSynthesis' in window) ? <Button 
-                    startEnhancer={() => <ImBullhorn />}
+                    startEnhancer={() => isSpeaking ? <HiVolumeOff /> : <ImBullhorn /> }
                     style={{ marginRight: '10px' }}
-                    onClick={() => speakText(quote)}>Speak</Button> : <></>}
+                    onClick={() => handleSpeakClick(quote)}>{ isSpeaking ? 'Silence' : 'Speak' }</Button> : <></>}
                     <Button
                         style={{ marginRight: '10px'}}
                         overrides={{
