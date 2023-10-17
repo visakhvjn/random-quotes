@@ -22,6 +22,10 @@ export const Main = () => {
         } else {
             const speech = new SpeechSynthesisUtterance(text);
             window.speechSynthesis.speak(speech);
+
+            speech.onend = () => {
+                setIsSpeaking(false);
+            };
         }
         
         setIsSpeaking(!isSpeaking);
