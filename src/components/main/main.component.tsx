@@ -71,6 +71,7 @@ export const Main = () => {
                     {('speechSynthesis' in window) ? <Button 
                     startEnhancer={() => isSpeaking ? <HiVolumeOff /> : <ImBullhorn /> }
                     style={{ marginRight: '10px' }}
+                    disabled={isLoading}
                     onClick={() => handleSpeakClick(quote)}>{ isSpeaking ? 'Silence' : 'Speak' }</Button> : <></>}
                     <Button
                         disabled={isSpeaking}
