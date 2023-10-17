@@ -73,11 +73,11 @@ export const Main = () => {
                     style={{ marginRight: '10px' }}
                     onClick={() => handleSpeakClick(quote)}>{ isSpeaking ? 'Silence' : 'Speak' }</Button> : <></>}
                     <Button
+                        disabled={isSpeaking}
                         style={{ marginRight: '10px'}}
                         overrides={{
                             BaseButton: {
                               style: ({ $theme }) => ({
-                                outline: `${$theme.colors.black} solid`,
                                 backgroundColor: $theme.colors.black,
                                 color: $theme.colors.white,
                                 ':hover': {
