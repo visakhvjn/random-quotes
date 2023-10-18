@@ -16,6 +16,8 @@ export const Main = () => {
     const [isCoped, setIsCoped] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
 
+    const promotionText = `\n\nDiscover more such quotes at - ${window.location.origin}`;
+
     const handleSpeakClick = (text: string) => {
 
         if (isSpeaking) {
@@ -97,7 +99,7 @@ export const Main = () => {
                         size={SIZE.compact}
                         isLoading={isLoading}
                     >Next Quote</Button>
-                    <CopyToClipboard onCopy={onCopy} text={quote}>
+                    <CopyToClipboard onCopy={onCopy} text={`'${quote} ~ ${author}'` + promotionText}>
                     <Button
                         startEnhancer={() => <ImCopy />}
                         kind={KIND.secondary}
