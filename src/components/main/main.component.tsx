@@ -99,7 +99,7 @@ export const Main = () => {
                         size={SIZE.compact}
                         isLoading={isLoading}
                     >Next Quote</Button>
-                    <CopyToClipboard onCopy={onCopy} text={`'${quote} ~ ${author}'` + promotionText}>
+                    <CopyToClipboard onCopy={onCopy} text={`'${quote}' ~${author}` + promotionText}>
                     <Button
                         startEnhancer={() => <ImCopy />}
                         kind={KIND.secondary}
