@@ -1,11 +1,12 @@
 import { Quote } from "../quote/quote.component";
 import { ButtonGroup } from "baseui/button-group";
 import { Button, SIZE, KIND } from "baseui/button";
-import {Block} from 'baseui/block';
+import { Block } from 'baseui/block';
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ImBullhorn, ImCopy } from "react-icons/im";
 import { HiVolumeOff } from "react-icons/hi";
+import { MonoHeadingXXLarge, MonoParagraphLarge } from "baseui/typography";
 
 
 export const Main = () => {
@@ -62,7 +63,11 @@ export const Main = () => {
     }, []);
 
     return (
-        <div style={{ padding: '10%'}}>
+        <div style={{ padding: '5% 10% 5% 10%'}}>
+            <Block style={{ display: 'block', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                <MonoHeadingXXLarge>QuoteQuest</MonoHeadingXXLarge>
+                <MonoParagraphLarge style={{ marginTop: '-1%'}}>Discover-Wisdom-at-Your-Fingertips</MonoParagraphLarge>
+            </Block>
             <Block style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                 <Quote text={quote} author={author} />
             </Block>
