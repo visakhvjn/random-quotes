@@ -8,12 +8,13 @@ import { ImBullhorn, ImCopy } from "react-icons/im";
 import { HiVolumeOff } from "react-icons/hi";
 import { MonoHeadingXXLarge, MonoParagraphLarge } from "baseui/typography";
 
+let firstLoad = true;
 
 export const Main = () => {
     const [quote, setQuote] = useState('');
     const [author, setAuthor] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [isCoped, setIsCoped] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
 
     const promotionText = `\n\nDiscover more such quotes at - ${window.location.origin}`;
@@ -35,7 +36,7 @@ export const Main = () => {
     };
 
     const onCopy = () => {
-        setIsCoped(true);
+        setIsCopied(true);
     }
 
     const fetchNewQuote = async () => {
@@ -56,12 +57,15 @@ export const Main = () => {
         setQuote(data[0].quote);
         setAuthor(data[0].author);
 
-        setIsCoped(false);
+        setIsCopied(false);
         setIsLoading(false);
     }
 
     useEffect(() => {
-        fetchNewQuote();
+        if (firstLoad) {
+            firstLoad = false;
+            fetchNewQuote();
+        }
     }, []);
 
     return (
@@ -103,10 +107,10 @@ export const Main = () => {
                     <Button
                         startEnhancer={() => <ImCopy />}
                         kind={KIND.secondary}
-                    >{isCoped ? 'Copied!' : 'Copy'}</Button>
+                    >{isCopied ? 'Copied!' : 'Copy'}</Button>
                     </CopyToClipboard>
                 </ButtonGroup>
             </Block>
         </div>
     );
-};
+};  
