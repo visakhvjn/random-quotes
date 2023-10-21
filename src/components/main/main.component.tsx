@@ -7,6 +7,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ImBullhorn, ImCopy } from "react-icons/im";
 import { HiVolumeOff } from "react-icons/hi";
 import { MonoHeadingXXLarge, MonoParagraphLarge } from "baseui/typography";
+import { StyledLink } from "baseui/link";
 
 let firstLoad = true;
 
@@ -110,6 +111,19 @@ export const Main = () => {
                     >{isCopied ? 'Copied!' : 'Copy'}</Button>
                     </CopyToClipboard>
                 </ButtonGroup>
+            </Block>
+            <Block style={{ display: 'flex', justifyContent: 'center', marginTop: '5%' }}>
+                <Block>
+                    <StyledLink target="blank" href="https://github.com/visakhvjn/random-quotes" style={{ textDecoration: 'none', color: 'grey' }}>
+                        Github
+                    </StyledLink>
+                </Block>
+                <Block>&nbsp;|&nbsp;</Block>
+                <Block>
+                    <StyledLink target="blank" href="https://twitter.com/vjnvisakh"  style={{ textDecoration: 'none', color: 'grey'}}>
+                        Twitter
+                    </StyledLink>
+                </Block>
             </Block>
         </div>
     );
