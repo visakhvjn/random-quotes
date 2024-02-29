@@ -19,6 +19,8 @@ export const Main = () => {
     const [isSpeaking, setIsSpeaking] = useState(false);
 
     const promotionText = `\n\nDiscover more such quotes at - ${window.location.origin}`;
+    const NINJA_API_KEY = process.env.REACT_APP_NINJA_API_KEY as string;
+    const NINJA_URL = process.env.REACT_APP_NINJA_URL as string;
 
     const handleSpeakClick = (text: string) => {
 
@@ -44,11 +46,11 @@ export const Main = () => {
         setIsLoading(true);
 
         const response = await fetch(
-            'https://api.api-ninjas.com/v1/quotes',
+            NINJA_URL,
             {
                 method: 'GET',
                 headers: {
-                    'X-Api-Key': 'WZl9PgOgZcA+7LYsJTyIkg==SxDi8ufcTDJRpl3i'
+                    'X-Api-Key': NINJA_API_KEY
                 }
             }
         );
@@ -67,6 +69,7 @@ export const Main = () => {
             firstLoad = false;
             fetchNewQuote();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
