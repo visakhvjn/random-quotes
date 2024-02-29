@@ -69,6 +69,7 @@ export const Main = () => {
             firstLoad = false;
             fetchNewQuote();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
