@@ -8,6 +8,10 @@ import { ImBullhorn, ImCopy } from "react-icons/im";
 import { HiVolumeOff } from "react-icons/hi";
 import { MonoHeadingXXLarge, MonoParagraphLarge } from "baseui/typography";
 import { StyledLink } from "baseui/link";
+// import { getQuoteFromNinja } from "../../services/ninja";
+import { getQuoteFromGemini } from "../../services/gemini";
+import { QuoteResponse } from "../../types/common";
+import { getQuoteFromNinja } from "../../services/ninja";
 
 let firstLoad = true;
 
@@ -17,10 +21,9 @@ export const Main = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
+    const [isPoweredByGemini, setPoweredByGemini] = useState(false);
 
     const promotionText = `\n\nDiscover more such quotes at - ${window.location.origin}`;
-    const NINJA_API_KEY = process.env.REACT_APP_NINJA_API_KEY as string;
-    const NINJA_URL = process.env.REACT_APP_NINJA_URL as string;
 
     const handleSpeakClick = (text: string) => {
 
@@ -43,32 +46,30 @@ export const Main = () => {
     }
 
     const fetchNewQuote = async () => {
-        setIsLoading(true);
+      setIsLoading(true);
 
-        const response = await fetch(
-            NINJA_URL,
-            {
-                method: 'GET',
-                headers: {
-                    'X-Api-Key': NINJA_API_KEY
-                }
-            }
-        );
+      let data: QuoteResponse = { quote: '', author: ''};
 
-        const data = await response.json();
+      if (Math.random() < 0.5) {
+        setPoweredByGemini(false);
+        data = await getQuoteFromNinja();
+      } else {
+        data = await getQuoteFromGemini();
+        setPoweredByGemini(true);
+      }
 
-        setQuote(data[0].quote);
-        setAuthor(data[0].author);
+      setQuote(data.quote);
+      setAuthor(data.author);
 
-        setIsCopied(false);
-        setIsLoading(false);
+      setIsCopied(false);
+      setIsLoading(false);
     }
 
     useEffect(() => {
-        if (firstLoad) {
-            firstLoad = false;
-            fetchNewQuote();
-        }
+      if (firstLoad) {
+          firstLoad = false;
+          fetchNewQuote();
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -115,7 +116,10 @@ export const Main = () => {
                     </CopyToClipboard>
                 </ButtonGroup>
             </Block>
-            <Block style={{ display: 'flex', justifyContent: 'center', marginTop: '5%' }}>
+            <Block style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
+              {isPoweredByGemini ? <u>Powered By Gemini</u>: ''}
+            </Block>
+            <Block style={{ display: 'flex', justifyContent: 'center', marginTop: '3%' }}>
                 <Block>
                     <StyledLink target="blank" href="https://github.com/visakhvjn/random-quotes" style={{ textDecoration: 'none', color: 'grey' }}>
                         Github
