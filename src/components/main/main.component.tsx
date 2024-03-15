@@ -8,10 +8,11 @@ import { ImBullhorn, ImCopy } from "react-icons/im";
 import { HiVolumeOff } from "react-icons/hi";
 import { MonoHeadingXXLarge, MonoParagraphLarge } from "baseui/typography";
 import { StyledLink } from "baseui/link";
-// import { getQuoteFromNinja } from "../../services/ninja";
 import { getQuoteFromGemini } from "../../services/gemini";
 import { QuoteResponse } from "../../types/common";
 import { getQuoteFromNinja } from "../../services/ninja";
+import { Input } from "baseui/input";
+import { addSubscriber } from "../../services/firebase";
 
 let firstLoad = true;
 
@@ -22,6 +23,10 @@ export const Main = () => {
     const [isCopied, setIsCopied] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [isPoweredByGemini, setPoweredByGemini] = useState(false);
+    const [email, setEmail] = useState("");
+    const [isButtonLoading, setIsButtonLoading] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(true);
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
     const promotionText = `\n\nDiscover more such quotes at - ${window.location.origin}`;
 
@@ -65,11 +70,41 @@ export const Main = () => {
       setIsLoading(false);
     }
 
+    const validateEmail = (_email: string) => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(_email);
+    }
+
+    const handleSubscription = async () => {
+        if (!validateEmail(email)) {
+            setIsEmailValid(false);
+            return;
+        }
+
+        setIsEmailValid(true);
+
+        setIsButtonLoading(true);
+        await addSubscriber(email).then(() => {
+            setEmail('');
+            localStorage.setItem('isSubscribed', 'true');
+            setIsSubscribed(true);
+        });
+
+        setIsButtonLoading(false);
+    }
+
     useEffect(() => {
       if (firstLoad) {
           firstLoad = false;
           fetchNewQuote();
       }
+
+      const _isSubscribed = localStorage.getItem('isSubscribed');
+
+      if (_isSubscribed === 'true') {
+        setIsSubscribed(true);
+      }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -131,6 +166,38 @@ export const Main = () => {
                         Twitter
                     </StyledLink>
                 </Block>
+            </Block>
+            <br />
+            <Block style={{
+                display: 'flex', justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column', position: 'fixed',
+                bottom: 0, backgroundColor: 'lightgray',
+                width: '100%', left: 0,
+                padding: '2%'
+            }}>
+                <Block>Receive wisdom in your inbox daily</Block>
+                <br />
+                <Block style={{ display: 'flex', flexDirection: 'row', gap: '2%', width: '30%' }}>
+                    <Input 
+                        disabled={isSubscribed}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email Address"
+                        clearOnEscape
+                        clearable
+                        error={!isEmailValid}
+                    />
+                    <Button
+                        isLoading={isButtonLoading}
+                        onClick={handleSubscription}
+                        disabled={isSubscribed}
+                    >
+                        Subscribe
+                    </Button>
+                </Block>
+                <br />
+                <Block>{isSubscribed && <>You are subscribed!</>}</Block>
             </Block>
         </div>
     );
