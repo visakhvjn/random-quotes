@@ -12,7 +12,7 @@ import { getQuoteFromGemini } from "../../services/gemini";
 import { QuoteResponse } from "../../types/common";
 import { getQuoteFromNinja } from "../../services/ninja";
 import { Input } from "baseui/input";
-import { addSubscriber } from "../../services/firebase";
+import { addSubscriber, isSubscribedAlready } from "../../services/firebase";
 
 let firstLoad = true;
 
@@ -84,6 +84,14 @@ export const Main = () => {
         setIsEmailValid(true);
 
         setIsButtonLoading(true);
+
+        if (await isSubscribedAlready(email)) {
+            localStorage.setItem('isSubscribed', 'true');
+            setIsSubscribed(true);
+            setIsButtonLoading(false);
+            return;
+        }
+
         await addSubscriber(email).then(() => {
             setEmail('');
             localStorage.setItem('isSubscribed', 'true');
