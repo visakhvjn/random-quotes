@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, getDocs, where, query } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -19,4 +19,12 @@ export const addSubscriber = async (email: string) => {
     email,
     status: 'ACTIVE'
   });
+}
+
+export const isSubscribedAlready = async (email: string) => {
+  const querySnapshot = await getDocs(
+    query(collection(db, 'subscribers'), where('email', '==', email))
+  );
+
+  return !querySnapshot.empty;
 }
