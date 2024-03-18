@@ -11,7 +11,7 @@ const quote = async (req: Request, context: Context) => {
     data = await getQuoteFromGemini();
   }
 
-  return new Response(data);
+  return Response.json({ data });
 }
 
 export default quote;
