@@ -2,21 +2,17 @@ import type { Context } from '@netlify/functions';
 import { getQuoteFromNinja } from './ninja';
 import { getQuoteFromGemini } from './gemini';
 
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
-};
-
 const quote = async (req: Request, context: Context) => {
   let data;
 
   if (req.method === 'OPTIONS') {
-    return {
-      statusCode: 200, 
-      headers,
-      body: 'OPTIONS'
-    };
+    const res = new Response();
+
+    res.headers.set("Access-Control-Allow-Origin", "*");
+    res.headers.append("Access-Control-Allow-Headers", "*");
+    res.headers.append("Access-Control-Allow-Methods", "*");
+
+    return res;
   }
 
   if (Math.random() < 0.5) {
