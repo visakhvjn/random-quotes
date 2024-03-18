@@ -1,4 +1,4 @@
-import { QuoteResponse } from './types';
+import { QuoteResponse, QuoteSource } from './types';
 
 const NINJA_API_KEY = process.env.REACT_APP_NINJA_API_KEY as string;
 const NINJA_URL = process.env.REACT_APP_NINJA_URL as string;
@@ -12,5 +12,5 @@ export const getQuoteFromNinja = async () => {
   );
 
   const data = await response.json();
-  return data[0] as QuoteResponse;
+  return { ...data[0], type: QuoteSource.NINJA } as QuoteResponse;
 }

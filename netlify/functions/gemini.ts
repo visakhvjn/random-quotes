@@ -1,4 +1,4 @@
-import { QuoteResponse } from './types';
+import { QuoteResponse, QuoteSource } from './types';
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 
 const MODEL_NAME = 'gemini-1.0-pro';
@@ -45,5 +45,5 @@ export const getQuoteFromGemini = async (): Promise<QuoteResponse> => {
   });
 
   const response = result.response;
-  return JSON.parse(response.text()) as QuoteResponse;
+  return { ...JSON.parse(response.text()), type: QuoteSource.GEMINI } as QuoteResponse;
 }

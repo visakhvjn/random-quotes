@@ -8,11 +8,10 @@ import { ImBullhorn, ImCopy } from "react-icons/im";
 import { HiVolumeOff } from "react-icons/hi";
 import { MonoHeadingXXLarge, MonoParagraphLarge } from "baseui/typography";
 import { StyledLink } from "baseui/link";
-import { getQuoteFromGemini } from "../../services/gemini";
-import { QuoteResponse } from "../../types/common";
-import { getQuoteFromNinja } from "../../services/ninja";
+import { QuoteResponse, QuoteSource } from "../../types/common";
 import { Input } from "baseui/input";
 import { addSubscriber, isSubscribedAlready } from "../../services/firebase";
+import { getQuoteFromNetlify } from "../../services/netlify";
 
 let firstLoad = true;
 
@@ -53,15 +52,8 @@ export const Main = () => {
     const fetchNewQuote = async () => {
       setIsLoading(true);
 
-      let data: QuoteResponse = { quote: '', author: ''};
-
-      if (Math.random() < 0.5) {
-        setPoweredByGemini(false);
-        data = await getQuoteFromNinja();
-      } else {
-        data = await getQuoteFromGemini();
-        setPoweredByGemini(true);
-      }
+      let data: QuoteResponse = await getQuoteFromNetlify();
+      setPoweredByGemini(data.type === QuoteSource.GEMINI);
 
       setQuote(data.quote);
       setAuthor(data.author);
